@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/public.css">
+</head>
+<body ng-app="app" ng-controller="adminCtrl">
+	<div class="top">
+		<div class="right">
+			<span style="float: left;">欢迎您，</span>
+			<div class="dropdown">
+				<div class="dropdown-toggle " type="button" id="dropdownMenu1" data-toggle="dropdown">
+					<span class="user">{{userName}}</span>
+					<span class="caret"></span>
+				</div>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+					<li role="presentation">
+						<a role="menuitem" tabindex="-1" href="#" class="editPwd" data-toggle="modal" data-target="#editPassword">修改密码</a>
+					</li>
+					<li role="presentation">
+						<a role="menuitem" tabindex="-1" href="#" ng-click ="exit()">退出</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+		<li role="presentation" class="active">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#student">学生管理 
+		    </a>
+		</li>
+		<li role="presentation">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#teacher">教师管理
+			</a>
+		</li>
+		<li role="presentation">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#lesson">课程管理
+			</a>
+		</li>
+	</ul>	
+	<div class="tab-content main">
+		<!-- 学生管理页 -->
+		<div role="tabpanel" class="tab-pane active" id="student">
+			<div class="addStudent">
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStudent">添加学生</button>
+			</div>
+			<table class="table table-hover">
+				<tr>
+					<th class="col-xs-3">学号</th>
+					<th class="col-xs-3">姓名</th>
+					<th class="col-xs-3">性别</th>
+					<th class="col-xs-3">操作</th>
+				</tr>
+				<tr ng-repeat='x in studentList'>
+					<td>{{x.number}}</td>
+					<td>{{x.name}}</td>
+					<td>{{x.sex}}</td>
+					<td>
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#editStudent" ng-click="editStudent($index)">编辑</button>
+						<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#wantDel" ng-click="wantDel($index)">删除</button>
+					</td>
+				</tr>
+				<tr>
+			</table>
+		</div>
+		<!-- 教师管理页 -->
+		<div role="tabpanel" class="tab-pane" id="teacher">
+			<div class="addStudent">
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTeacher">添加教师</button>
+			</div>
+			<table class="table table-hover">
+				<tr>
+					<th class="col-xs-3">教工号</th>
+					<th class="col-xs-3">姓名</th>
+					<th class="col-xs-3">操作</th>
+				</tr>
+				<tr ng-repeat="x in teacherList">
+					<td>{{x.account}}</td>
+					<td>{{x.name}}</td>
+					<td>
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#editTeacher" ng-click="editTeacher($index)">编辑</button>
+						<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#wantDelT" ng-click="wantDelT($index)">删除</button>
+					</td>
+				</tr>
+				<tr>
+			</table>
+		</div>
+		<!-- 课程管理页 -->
+		<div role="tabpanel" class="tab-pane" id="lesson">
+			<div class="addStudent">
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addLesson">添加课程</button>
+			</div>
+			<table class="table table-hover">
+				<tr>
+					<th class="col-xs-2">编号</th>
+					<th class="col-xs-2">课程名称</th>
+					<th class="col-xs-2">任课教师</th>
+					<th class="col-xs-1">学生列表</th>
+					<th class="col-xs-1">分数分布</th>
+					<th class="col-xs-4">操作</th>
+				</tr>
+				<tr ng-repeat="x in lessonList" >
+					<td>{{x.id}}</td>
+					<td>{{x.name}}</td>
+					<td>{{x.teacher.name}}</td>
+					<td>
+						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#watchStudent" ng-click="watchStudent($index)">查看列表
+						</button>
+					</td>
+					<td>
+						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#watchGrades" ng-click="watchGrades($index)">查看
+						</button>
+					</td>
+					<td>
+						<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#lessonAddStudent" ng-click="lessonAddStudent($index)">添加学生</button>
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#editLesson" ng-click="editLesson($index)">编辑</button>
+						<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#wantDelL" ng-click="wantDelL($index)">删除</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+<!-- modal -->
+	<!-- Modal 添加学生 -->
+	<div class="modal fade" id="addStudent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</div>
+					<h4 class="modal-title" id="myModalLabel">添加学生</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<label for="inputEmail3" class="col-sm-2 control-label">学号</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="inputEmail3" placeholder="请输入学号" ng-model="addStudentNumber" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">姓名</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="inputPassword3" placeholder="请输入姓名" ng-model="addStudentName">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">性别</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="inputPassword3" placeholder="请输入性别" ng-model="addStudentSex">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">密码</label>
+							<div class="col-sm-8">
+								<input type="password" class="form-control" id="inputPassword3" placeholder="请输入密码" ng-model="addStudentPwd" autocomplete="off">
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer noBorder">
+					<button type="button" class="btn btn-success" ng-click="saveStudent()">保存</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal 编辑学生 -->
+	<div class="modal fade" id="editStudent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</div>
+					<h4 class="modal-title" id="myModalLabel">添加学生</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<label for="inputEmail3" class="col-sm-2 control-label">学号</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="inputEmail3" placeholder="请输入学号" ng-model="editStudentNumber" disabled>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">姓名</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="inputPassword3" placeholder="请输入姓名" ng-model="editStudentName">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">性别</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="inputPassword3" placeholder="请输入性别" ng-model="editStudentSex" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">密码</label>
+							<div class="col-sm-8">
+								<input type="password" class="form-control" id="inputPassword3" placeholder="请输入密码" ng-model="editStudentPwd" autocomplete="off">
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer noBorder">
+					<button type="button" class="btn btn-success" ng-click="saveEditStudent()">保存</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal 添加教师 -->
+	<div class="modal fade" id="addTeacher" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</div>
+					<h4 class="modal-title" id="myModalLabel">添加教师</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<label for="inputEmail3" class="col-sm-2 control-label">教工号</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="inputEmail3" placeholder="请输入教工号" ng-model="addTeacherAccount" autocomplete="off">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">姓名</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="inputPassword3" placeholder="请输入姓名" ng-model="addTeacherName">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">密码</label>
+							<div class="col-sm-8">
+								<input type="password" class="form-control" id="inputPassword3" placeholder="请输入密码" ng-model="addTeacherPwd" autocomplete="off">
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer noBorder">
+					<button type="button" class="btn btn-success" ng-click="saveTeacher()">保存</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal 编辑教师 -->
+	<div class="modal fade" id="editTeacher" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</div>
+					<h4 class="modal-title" id="myModalLabel">添加教师</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<label for="inputEmail3" class="col-sm-2 control-label">教工号</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="inputEmail3" placeholder="请输入教工号" ng-model="editTeacherAccount" autocomplete="off" disabled>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">姓名</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="inputPassword3" placeholder="请输入姓名" ng-model="editTeacherName">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">密码</label>
+							<div class="col-sm-8">
+								<input type="password" class="form-control" id="inputPassword3" placeholder="请输入密码" ng-model="editTeacherPwd" autocomplete="off">
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer noBorder">
+					<button type="button" class="btn btn-success" ng-click="saveEditTeacher()">保存</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal 添加课程 -->
+	<div class="modal fade" id="addLesson" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</div>
+					<h4 class="modal-title" id="myModalLabel">添加课程</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">课程名称</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" placeholder="请输入课程名称" ng-model="addLessonName">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">教师</label>
+							<div class="col-sm-8">
+								<select  class="form-control" ng-options="x.id as x.name for x in teacherList" ng-model="addLessonTeacher"></select>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer noBorder">
+					<button type="button" class="btn btn-success" ng-click="saveLesson()">保存</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal 编辑课程 -->
+	<div class="modal fade" id="editLesson" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</div>
+					<h4 class="modal-title" id="myModalLabel">添加课程</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">课程名称</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="inputText3" placeholder="请输入课程名称" ng-model="editLessonName">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">教师</label>
+							<div class="col-sm-8">
+								<select  class="form-control" ng-options="x.id as x.name for x in teacherList" ng-model="editLessonTeacher"></select>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer noBorder">
+					<button type="button" class="btn btn-success" ng-click="saveEditLesson()">保存</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal 课程 成绩分布 -->
+	<div class="modal fade" id="watchGrades" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header noBorder">
+					<div type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</div>
+					<h4 class="modal-title" id="myModalLabel">成绩分布</h4>
+				</div>
+				<div class="modal-body">
+					<table class="table table-hover">
+						<tr>
+							<th class="col-xs-1">100</th>
+							<th class="col-xs-2">90-99</th>
+							<th class="col-xs-2">80-89</th>
+							<th class="col-xs-2">70-79</th>
+							<th class="col-xs-2">60-69</th>
+							<th class="col-xs-2">0-59</th>
+							<th class="col-xs-1">平均</th>
+						</tr>
+						<tr>
+							<td>{{grades100}}</td>
+							<td>{{grades90}}</td>
+							<td>{{grades80}}</td>
+							<td>{{grades70}}</td>
+							<td>{{grades60}}</td>
+							<td>{{grades59}}</td>
+							<td>{{gradesAvg}}</td>
+						</tr>
+					</table>
+				</div>
+				<div class="modal-footer noBorder">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal 课程 学生列表 -->
+	<div class="modal fade" id="watchStudent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header noBorder">
+					<div type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</div>
+					<h4 class="modal-title" id="myModalLabel">学生列表</h4>
+				</div>
+				<div class="modal-body">
+					<table class="table table-hover">
+						<tr>
+							<th class="col-xs-3">学号</th>
+							<th class="col-xs-3">姓名</th>
+							<th class="col-xs-3">性别</th>
+							<th class="col-xs-3">操作</th>
+						</tr>
+						<tr ng-repeat='x in lessonStudent'>
+							<td>{{x.number}}</td>
+							<td>{{x.name}}</td>
+							<td>{{x.sex}}</td>
+							<td>
+								<button type="button" class="btn btn-danger" data-toggle="modal" ng-click="wantDelLessonStudent($index)" ng-hide="selectDel==true">删除</button>
+								<button type="button" class="btn btn-danger" data-toggle="modal" ng-click="delLessonStudent()" ng-show="selectDel==true">确认删除</button>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="modal-footer noBorder">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal 课程 添加学生 -->
+	<div class="modal fade" id="lessonAddStudent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</div>
+					<h4 class="modal-title" id="myModalLabel">添加课程</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">学生</label>
+							<div class="col-sm-8">
+								<select  class="form-control" ng-options="x.id as x.name for x in studentList" ng-model="selectLessonStudent"></select>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer noBorder">
+					<button type="button" class="btn btn-success" ng-click="saveLessonStudent()">保存</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal 确认删除学生 -->
+	<div class="modal fade" id="wantDel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header noBorder">
+					<div type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="wantDelete">是否删除？</div>
+				</div>
+				<div class="modal-footer noBorder">
+					<button type="button" class="btn btn-danger" ng-click="del()">确认</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal 确认删除教师 -->
+	<div class="modal fade" id="wantDelT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header noBorder">
+					<div type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="wantDelete">是否删除？</div>
+				</div>
+				<div class="modal-footer noBorder">
+					<button type="button" class="btn btn-danger" ng-click="delT()">确认</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal 确认删除课程 -->
+	<div class="modal fade" id="wantDelL" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header noBorder">
+					<div type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="wantDelete">是否删除？</div>
+				</div>
+				<div class="modal-footer noBorder">
+					<button type="button" class="btn btn-danger" ng-click="delL()">确认</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal 修改密码 -->
+	<div class="modal fade" id="editPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</div>
+					<h4 class="modal-title" id="myModalLabel">修改密码</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">旧密码</label>
+							<div class="col-sm-8">
+								<input type="password" class="form-control" id="inputPassword3" placeholder="请输入旧密码" ng-model="oldPwd">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">新密码</label>
+							<div class="col-sm-8">
+								<input type="password" class="form-control" id="inputPassword3" placeholder="请输入新密码" ng-model="newPwd">
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer noBorder">
+					<button type="button" class="btn btn-success" ng-click="savePwd()">保存</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- modal -->
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/angular.min.js"></script>
+	<!-- <script src="js/angular-route.min.js"></script> -->
+	<script type="text/javascript" src="js/controller/adminCtrl.js"></script>
+	<script>
+		$('#myTab a').click(function (e) {
+			e.preventDefault();
+			$(this).tab('show');
+			// $(this).parent().parent().siblings().tab('show');
+		})
+		// $("#myTab li").mouseover(function(){
+		// 	$('.dropdown-toggle').dropdown()
+		// })
+	</script>
+</body>
+</html>

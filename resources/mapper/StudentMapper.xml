@@ -1,0 +1,166 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="course.dao.StudentMapper">
+    <resultMap id="BaseResultMap" type="course.enity.Student">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="number" property="number" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="icon" property="icon" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="TINYINT"/>
+        <result column="pwd" property="pwd" jdbcType="VARCHAR"/>
+        <result column="academy" property="academy" jdbcType="VARCHAR"/>
+        <result column="state" property="state" jdbcType="TINYINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">id, name, number, create_time, update_time, icon, sex, pwd, academy, state</sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from student
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from student
+    where id = #{id,jdbcType=INTEGER}
+   </delete>
+    <insert id="insert" parameterType="course.enity.Student">
+    insert into student (id, name, number, 
+      create_time, update_time, icon, 
+      sex, pwd, academy, 
+      state)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{icon,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=TINYINT}, #{pwd,jdbcType=VARCHAR}, #{academy,jdbcType=VARCHAR}, 
+      #{state,jdbcType=TINYINT})
+    </insert>
+    <insert id="insertSelective" parameterType="course.enity.Student">
+        insert into student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="number != null">
+                number,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="icon != null">
+                icon,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="pwd != null">
+                pwd,
+            </if>
+            <if test="academy != null">
+                academy,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="number != null">
+                #{number,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="icon != null">
+                #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=TINYINT},
+            </if>
+            <if test="pwd != null">
+                #{pwd,jdbcType=VARCHAR},
+            </if>
+            <if test="academy != null">
+                #{academy,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="course.enity.Student">
+        update student
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="number != null">
+                number = #{number,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="icon != null">
+                icon = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=TINYINT},
+            </if>
+            <if test="pwd != null">
+                pwd = #{pwd,jdbcType=VARCHAR},
+            </if>
+            <if test="academy != null">
+                academy = #{academy,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="course.enity.Student">
+    update student
+    set name = #{name,jdbcType=VARCHAR},
+      number = #{number,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      icon = #{icon,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=TINYINT},
+      pwd = #{pwd,jdbcType=VARCHAR},
+      academy = #{academy,jdbcType=VARCHAR},
+      state = #{state,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from student
+    </select>
+    <select id="selectByNum" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from student where number=#{number,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByName" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM student where name like CONNECT ('%',#{name,jdbcType=VARCHAR},'%')
+    </select>
+
+</mapper>

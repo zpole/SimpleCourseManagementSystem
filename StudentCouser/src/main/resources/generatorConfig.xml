@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <classPathEntry
+            location="D:\Developer\apache-maven-3.3.9\repository\mysql\mysql-connector-java\5.1.6\mysql-connector-java-5.1.6.jar"/>
+    <context id="context">
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/><!-- 是否取消注释 -->
+            <property name="suppressDate" value="true"/> <!-- 是否生成注释代时间戳 -->
+        </commentGenerator>
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/course" userId="root"
+                        password="yy19920715"/>
+
+        <javaModelGenerator targetPackage="course.enity"
+                            targetProject="D:\Code\Java\StudentCouser\src\main\java"/>
+        <sqlMapGenerator targetPackage="course.mapper"
+                         targetProject="D:\Code\Java\StudentCouser\src\main\resources"/>
+        <javaClientGenerator targetPackage="course.dao"
+                             targetProject="D:\Code\Java\StudentCouser\src\main\java" type="XMLMAPPER"/>
+
+        <table schema="course" tableName="student"
+               enableCountByExample="false" enableSelectByExample="false"
+               enableDeleteByExample="false" enableUpdateByExample="false">
+        </table>
+        <table schema="course" tableName="teacher"
+               enableCountByExample="false" enableSelectByExample="false"
+               enableDeleteByExample="false" enableUpdateByExample="false">
+        </table>
+
+        <table schema="course" tableName="admin"
+               enableCountByExample="false" enableSelectByExample="false"
+               enableDeleteByExample="false" enableUpdateByExample="false">
+        </table>
+
+        <table schema="course" tableName="course"
+               enableCountByExample="false" enableSelectByExample="false"
+               enableDeleteByExample="false" enableUpdateByExample="false">
+        </table>
+
+        <table schema="course" tableName="course_student"
+               enableCountByExample="false" enableSelectByExample="false"
+               enableDeleteByExample="false" enableUpdateByExample="false">
+        </table>
+        <!--<table schema="oem" tableName="activity_detail"-->
+        <!--enableCountByExample="false" enableSelectByExample="false"-->
+        <!--enableDeleteByExample="false" enableUpdateByExample="false">-->
+        <!--</table>-->
+        <!--<table schema="oem" tableName="album_live0"-->
+        <!--enableCountByExample="false" enableSelectByExample="false"-->
+        <!--enableDeleteByExample="false" enableUpdateByExample="false">-->
+        <!--</table>-->
+        <!--<table schema="oem" tableName="file_info"-->
+        <!--enableCountByExample="false" enableSelectByExample="false"-->
+        <!--enableDeleteByExample="false" enableUpdateByExample="false">-->
+        <!--</table>-->
+        <!--<table schema="oem" tableName="live_info0"-->
+        <!--enableCountByExample="false" enableSelectByExample="false"-->
+        <!--enableDeleteByExample="false" enableUpdateByExample="false">-->
+        <!--</table>-->
+        <!--<table schema="oem" tableName="live_logo"-->
+        <!--enableCountByExample="false" enableSelectByExample="false"-->
+        <!--enableDeleteByExample="false" enableUpdateByExample="false">-->
+        <!--</table>-->
+        <!--<table schema="oem" tableName="live_statistics0"-->
+        <!--enableCountByExample="false" enableSelectByExample="false"-->
+        <!--enableDeleteByExample="false" enableUpdateByExample="false">-->
+        <!--</table>-->
+        <!--<table schema="oem" tableName="logo_order"-->
+        <!--enableCountByExample="false" enableSelectByExample="false"-->
+        <!--enableDeleteByExample="false" enableUpdateByExample="false">-->
+        <!--</table>-->
+        <!--<table schema="cloud" tableName="month_flow_history"-->
+        <!--enableCountByExample="false" enableSelectByExample="false"-->
+        <!--enableDeleteByExample="false" enableUpdateByExample="false">-->
+        <!--</table>-->
+        <!--<table schema="oem" tableName="new_live"-->
+        <!--enableCountByExample="false" enableSelectByExample="false"-->
+        <!--enableDeleteByExample="false" enableUpdateByExample="false">-->
+        <!--</table>-->
+        <!--<table schema="oem" tableName="replace_logo_log"-->
+        <!--enableCountByExample="false" enableSelectByExample="false"-->
+        <!--enableDeleteByExample="false" enableUpdateByExample="false">-->
+        <!--</table>-->
+        <!--<table schema="oem" tableName="setting"-->
+        <!--enableCountByExample="false" enableSelectByExample="false"-->
+        <!--enableDeleteByExample="false" enableUpdateByExample="false">-->
+        <!--</table>-->
+        <!--<table schema="oem" tableName="shepherd"-->
+        <!--enableCountByExample="false" enableSelectByExample="false"-->
+        <!--enableDeleteByExample="false" enableUpdateByExample="false">-->
+        <!--</table>-->
+        <!--<table schema="oem" tableName="shepherdrelation"-->
+        <!--enableCountByExample="false" enableSelectByExample="false"-->
+        <!--enableDeleteByExample="false" enableUpdateByExample="false">-->
+        <!--</table>-->
+        <!--<table schema="oem" tableName="user_live0"-->
+        <!--enableCountByExample="false" enableSelectByExample="false"-->
+        <!--enableDeleteByExample="false" enableUpdateByExample="false">-->
+        <!--</table>-->
+    </context>
+</generatorConfiguration>

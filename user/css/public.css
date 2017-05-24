@@ -1,0 +1,42 @@
+.top {
+	height: 50px;
+	background-color: #1B3160;
+}
+.right {
+	height: 100%;
+	width: 180px;
+	float: right;
+	color: #fff;
+	line-height: 50px;
+	font-size: 14px;
+}
+.user{
+	float: left;
+	cursor: pointer
+}
+.user:hover {
+	color: #f60;
+}
+ul.nav {
+	background-color: #204077;
+}
+ul.nav li {
+	cursor: pointer
+}
+.main .addStudent {
+	margin: 10px;
+	float: right;
+}
+th,td {
+	text-align: center;
+}
+.noBorder {
+	border: none
+}
+.modal-footer {
+	text-align: center;
+}
+.modal .wantDelete {
+	text-align: center;
+	font-size: 25px;
+}

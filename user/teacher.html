@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/public.css">
+</head>
+<body ng-app="app" ng-controller="teacherCtrl">
+	<div class="top">
+		<div class="right">
+			<span style="float: left;">欢迎您，</span>
+			<div class="dropdown">
+				<div class="dropdown-toggle " type="button" id="dropdownMenu1" data-toggle="dropdown">
+					<span class="user">{{userName}}</span>
+					<span class="caret"></span>
+				</div>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+					<li role="presentation">
+						<a role="menuitem" tabindex="-1" href="#" class="editPwd" data-toggle="modal" data-target="#editPassword">修改密码</a>
+					</li>
+					<li role="presentation">
+						<a role="menuitem" tabindex="-1" href="#" ng-click="exit()">退出</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+		<li role="presentation" class="active">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#lesson">课程管理
+			</a>
+		</li>
+		<!-- <li role="presentation">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#student">学生管理
+		    </a>
+		</li> -->
+	</ul>
+	<div class="tab-content main">
+		<div role="tabpanel" class="tab-pane active" id="lesson">
+			<table class="table table-hover">
+				<tr>
+					<th class="col-xs-2">编号</th>
+					<th class="col-xs-2">课程名称</th>
+					<th class="col-xs-2">学生列表</th>
+					<th class="col-xs-2">成绩分布</th>
+				</tr>
+				<tr ng-repeat = "x in teacherLesson">
+					<td>{{x.id}}</td>
+					<td>{{x.name}}</td>
+					<td>
+						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#studentList" ng-click="showStudent($index)">查看列表
+						</button>
+					</td>
+					<td>
+						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#watchGrades" ng-click="watchGrades($index)">查看
+						</button>
+					</td>
+				</tr>
+				<tr>
+			</table>
+		</div>
+		<!-- <div role="tabpanel" class="tab-pane" id="student">
+			<table class="table table-hover">
+				<tr>
+					<th class="col-xs-3">学号</th>
+					<th class="col-xs-3">姓名</th>
+					<th class="col-xs-3">成绩</th>
+					<th class="col-xs-3">修改成绩</th>
+				</tr>
+				<tr>
+					<td>1</td>
+					<td>2</td>
+					<td>3</td>
+					<td>
+						<button type="button" class="btn btn-info">修改</button>
+					</td>
+				</tr>
+				<tr>
+			</table>
+		</div> -->
+	</div>
+	<!-- Modal 课程 学生列表 -->
+	<div class="modal fade" id="studentList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header noBorder">
+					<div type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</div>
+					<h4 class="modal-title" id="myModalLabel">学生列表</h4>
+				</div>
+				<div class="modal-body">
+					<table class="table table-hover">
+						<tr>
+							<th class="col-xs-3">学号</th>
+							<th class="col-xs-3">姓名</th>
+							<th class="col-xs-3">成绩</th>
+							<th class="col-xs-3">操作</th>
+						</tr>
+
+						<tr ng-repeat = "student in currentList.students">
+							<th>{{student.number}}</th>
+							<td>{{student.name}}</td>
+							<td><input ng-model="student.grade" value=""></input></td>
+							<td>
+								<button type="button" class="btn btn-info" ng-click="editStudentGrade($index)">修改成绩</button>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="modal-footer noBorder">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal 修改密码 -->
+	<div class="modal fade" id="editPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</div>
+					<h4 class="modal-title" id="myModalLabel">修改密码</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">旧密码</label>
+							<div class="col-sm-8">
+								<input type="password" class="form-control" id="inputPassword3" placeholder="请输入旧密码" ng-model="oldPwd">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-sm-2 control-label">新密码</label>
+							<div class="col-sm-8">
+								<input type="password" class="form-control" id="inputPassword3" placeholder="请输入新密码" ng-model="newPwd">
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer noBorder">
+					<button type="button" class="btn btn-success" ng-click="savePwd()">保存</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal 课程 成绩 -->
+	<div class="modal fade" id="watchGrades" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header noBorder">
+					<div type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</div>
+					<h4 class="modal-title" id="myModalLabel">成绩分布</h4>
+				</div>
+				<div class="modal-body">
+					<table class="table table-hover">
+						<tr>
+							<th class="col-xs-1">100</th>
+							<th class="col-xs-2">90-99</th>
+							<th class="col-xs-2">80-89</th>
+							<th class="col-xs-2">70-79</th>
+							<th class="col-xs-2">60-69</th>
+							<th class="col-xs-2">0-59</th>
+							<th class="col-xs-1">平均</th>
+						</tr>
+						<tr>
+							<td>{{grades100}}</td>
+							<td>{{grades90}}</td>
+							<td>{{grades80}}</td>
+							<td>{{grades70}}</td>
+							<td>{{grades60}}</td>
+							<td>{{grades59}}</td>
+							<td>{{gradesAvg}}</td>
+						</tr>
+					</table>
+				</div>
+				<div class="modal-footer noBorder">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/angular-route.min.js"></script>
+	<script>
+		$('#myTab a').click(function (e) {
+			e.preventDefault();
+			$(this).tab('show');
+			// $(this).parent().parent().siblings().tab('show');
+		})
+		var app = angular.module('app',[]);
+		app.controller("teacherCtrl",function($scope,$http){
+		//用户名
+			$http.post("/course/user/info")
+			.success(function(result){
+				if(result.errorCode ==100){
+					$scope.userName = result.value.name;
+				}
+				else if(result.errorCode == 404){
+					alert(result.value)
+					window.location.replace("/user/login.html");
+				}
+				else{
+					alert(result.value)
+				}
+
+			})
+			$scope.editStudentGrade=function($index){
+
+				$scope.currentStudent=$scope.currentList.students[$index];
+			  if($scope.currentStudent.grade<0||$scope.currentStudent.grade>100){
+				 alert("请输入正确的分数")
+				 return;
+				}
+				var req={};
+			  req.studentId=$scope.currentStudent.id;
+				req.courserId=$scope.currentList.id;
+				req.grade=$scope.currentStudent.grade;
+				$http.post("/course/teacher/saveStudentGrade",req)
+				.success(function(result){
+					if(result.errorCode == 100){
+						alert("修改成功");
+						$('.modal').modal('hide');
+					}
+					else{
+						alert(result.value)
+					}});
+
+		}
+		 //显示分数
+		 $scope.showStudent=function($index){
+			 $scope.currentList= $scope.teacherLesson[$index];
+		 }
+		//课程列表
+			$scope.loadLesson = function(){
+				$http.post("/course/teacher/course/list")
+				.success(function(result){
+					$scope.teacherLesson = result.value;
+				})
+			}
+			$scope.loadLesson();
+		//课程查看成绩分布
+			$scope.watchGrades = function($index){
+				var id = $scope.teacherLesson[$index].id;
+				$http.post("/course/course/"+id+"/grades")
+				.success(function(result){
+					if(result.errorCode == 100){
+						$scope.grades = result.value;
+						$scope.grades100 = $scope.grades["100"];
+						$scope.grades90 = $scope.grades["90-99"];
+						$scope.grades80 = $scope.grades["80-89"];
+						$scope.grades70 = $scope.grades["70-79"];
+						$scope.grades60 = $scope.grades["60-69"];
+						$scope.grades59 = $scope.grades["0-59"];
+						$scope.gradesAvg = $scope.grades.avg;
+					}
+					else{
+						alert(result.value)
+					}
+				})
+			}
+		//修改密码
+			$scope.savePwd = function(){
+				var data = {};
+				data.pwd = $scope.newPwd;
+				data.oldPwd = $scope.oldPwd
+				$http.post("/course/teacher/change/pwd",data)
+				.success(function(result){
+					if(result.errorCode == 100){
+						alert("修改成功");
+						$('.modal').modal('hide');
+					}
+					else{
+						alert(result.value)
+					}
+
+				})
+			}
+		//退出
+			$scope.exit = function(){
+				$http.post("/course/user/exit")
+				.success(function(result){
+					if(result.errorCode == 100){
+						window.location.replace("/user/login.html");
+					}
+					else{
+						alert(result.value)
+					}
+				})
+			}
+		})
+	</script>
+</body>
+</html>

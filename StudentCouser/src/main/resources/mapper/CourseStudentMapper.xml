@@ -1,0 +1,161 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="course.dao.CourseStudentMapper">
+    <resultMap id="BaseResultMap" type="course.enity.CourseStudent">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="student_id" property="studentId" jdbcType="INTEGER"/>
+        <result column="courser_id" property="courserId" jdbcType="INTEGER"/>
+        <result column="state" property="state" jdbcType="TINYINT"/>
+        <result column="grade" property="grade" jdbcType="TINYINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, create_time, update_time, student_id, courser_id, state, grade
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from course_student
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from course_student
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="course.enity.CourseStudent">
+    insert into course_student (id, create_time, update_time, student_id, courser_id,
+      state, grade)
+    values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{studentId,jdbcType=INTEGER}, #{courserId,jdbcType=INTEGER},
+      #{state,jdbcType=TINYINT}, #{grade,jdbcType=TINYINT})
+  </insert>
+    <insert id="insertSelective" parameterType="course.enity.CourseStudent">
+        insert into course_student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+
+            <if test="studentId != null">
+                student_id,
+            </if>
+            <if test="courserId != null">
+                courser_id,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="grade != null">
+                grade,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+
+            <if test="studentId != null">
+                #{studentId,jdbcType=INTEGER},
+            </if>
+            <if test="courserId != null">
+                #{courserId,jdbcType=INTEGER},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=TINYINT},
+            </if>
+            <if test="grade != null">
+                #{grade,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="course.enity.CourseStudent">
+        update course_student
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+
+            <if test="studentId != null">
+                student_id = #{studentId,jdbcType=INTEGER},
+            </if>
+            <if test="courserId != null">
+                courser_id = #{courserId,jdbcType=INTEGER},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=TINYINT},
+            </if>
+            <if test="grade != null">
+                grade = #{grade,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="course.enity.CourseStudent">
+    update course_student
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      student_id = #{studentId,jdbcType=INTEGER},
+      courser_id = #{courserId,jdbcType=INTEGER},
+      state = #{state,jdbcType=TINYINT},
+      grade = #{grade,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from course_student
+        <where>
+            <if test="courseId !=null">
+                courser_id=#{courseId,jdbcType=INTEGER}
+            </if>
+            <if test="studentId !=null">
+                and student_id=#{studentId,jdbcType=INTEGER}
+            </if>
+            <if test="startGrade !=null">
+                and grade &gt;= #{startGrade,jdbcType=INTEGER}
+            </if>
+            <if test="endGrade !=null">
+                and grade &lt;= #{endGrade,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by grade desc,create_time ASC
+    </select>
+
+    <delete id="deleteByCourseAndStudentId">
+    DELETE  from course_student where courser_id=#{courseId} and student_id=#{studentId}
+  </delete>
+    <select id="average" resultType="Float">
+        select AVG (grade) from course_student where courser_id=#{id,jdbcType=INTEGER};
+    </select>
+
+
+    <select id="selectStudentCourse" parameterType="course.enity.CourseStudent" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from course_student
+        where  courser_id=#{courserId} and student_id=#{studentId};
+
+    </select>
+
+
+    <update id="updateGrade" parameterType="course.enity.CourseStudent">
+         update course_student
+         SET grade=#{grade,jdbcType=INTEGER}
+         where courser_id=#{courserId} and student_id=#{studentId};
+    </update>
+
+</mapper>

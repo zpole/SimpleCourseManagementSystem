@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>管理系统用户登录</title>
+    <link href="css/login.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all" />
+
+</head>
+
+<body>
+    <div id="tab">
+        <ul class="tab_menu">
+            <li class="selected">学生登录</li>
+            <li>教师登录</li>
+            <li>管理员登录</li>
+        </ul>
+        <div class="tab_box">
+            <!-- 学生登录开始 -->
+            <div>
+                <div class="stu_error_box"></div>
+                <div  class="stu_login_error">
+                    <div id="username">
+                        <label>学&nbsp;&nbsp;&nbsp;号：</label>
+                        <input type="text" id="stu_username_hide"  placeholder="请输入学号" autocomplete="off"/>
+                    </div>
+                    <div id="password">
+                        <label>密&nbsp;&nbsp;&nbsp;码：</label>
+                        <input type="password" id="stu_password_hide"  placeholder="请输入密码" autocomplete="off"/>
+                    </div>
+                    <div id="login">
+                        <button type="submit" class="toLongin" onclick="studentLogin()">登录</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 学生登录结束-->
+            <!-- 教师登录开始-->
+            <div class="hide">
+                <div class="tea_error_box"></div>
+                <div action="" method="post" class="tea_login_error">
+                    <div id="username">
+                        <label>教工号：</label>
+                        <input type="text" id="tea_username_hide" name="username" placeholder="请输入教工号" autocomplete="off"/>
+                    </div>
+                    <div id="password">
+                        <label>密&nbsp;&nbsp;&nbsp;码：</label>
+                        <input type="password" id="tea_password_hide" name="password" placeholder="请输入密码" autocomplete="off"/>
+                    </div>
+                    <div id="login">
+                        <button type="submit" class="toLongin" onclick="teacherLogin()">登录</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 导师登录结束-->
+            <!-- 管理员登录开始-->
+            <div class="hide">
+                <div class="sec_error_box"></div>
+                <div class="sec_login_error">
+                    <div id="username">
+                        <label>教务号：</label>
+                        <input type="text" id="sec_username_hide"  placeholder="请输入管理员帐号" autocomplete="off"/>
+                    </div>
+                    <div id="password">
+                        <label>密&nbsp;&nbsp;&nbsp;码：</label>
+                        <input type="password" id="sec_password_hide" placeholder="请输入密码" autocomplete="off" />
+                    </div>
+                    <div id="login">
+                        <button type="submit" class="toLongin" onclick="adminLogin()">登录</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 教务登录结束-->
+        </div>
+    </div>
+
+    <script type="text/javascript" src="js/jquery.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var $tab_li = $('#tab ul li');
+            $tab_li.hover(function(){
+                $(this).addClass('selected').siblings().removeClass('selected');
+                var index = $tab_li.index(this);
+                $('div.tab_box > div').eq(index).show().siblings().hide();
+            }); 
+        });
+        // $(function(){
+        /*学生登录信息验证*/
+            var stuName;
+            var stuPwd;
+            $("#stu_username_hide").focus(function(){
+                stuName = $(this).val();
+                if(stuName=='输入学号'){
+                    $(this).val('');
+                }
+            });
+            $("#stu_username_hide").focusout(function(){
+                stuName = $(this).val();
+                if(stuName==''){
+                    $(this).val('输入学号');
+                }
+            });
+            $("#stu_password_hide").focus(function(){
+                stuPwd = $(this).val();
+                if(stuPwd=='输入密码'){
+                    $(this).val('');
+                }
+            });
+            $("#stu_password_hide").focusout(function(){
+                stuPwd = $(this).val();
+                if(stuPwd==''){
+                    // $(this).val('输入密码');
+                }
+            });
+            function studentLogin(){
+                var data ={};
+                data.account = parseInt(stuName);
+                data.pwd = stuPwd;
+                $.ajax({
+                    type: "POST",
+                    url: "/course/student/login",
+                    data: JSON.stringify(data),
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function(result) {
+                        loginig = false;
+                        if (result.errorCode == 100) {
+                            window.location.replace("/user/student.html");
+                            
+                        } else {
+                            alert("帐号或密码错误")
+                        }
+                    }
+                })
+            }
+        /*教师登录信息验证*/
+            var teacherName;
+            var teacherPwd;
+            $("#tea_username_hide").focus(function(){
+                teacherName = $(this).val();
+                if(teacherName=='输入教工号'){
+                   $(this).val('');
+                }
+            });
+            $("#tea_username_hide").focusout(function(){
+                teacherName = $(this).val();
+                if(teacherName==''){
+                    $(this).val('输入教工号');
+                }
+            });
+            $("#tea_password_hide").focus(function(){
+                teacherPwd= $(this).val();
+                if(teacherPwd=='输入密码'){
+                    $(this).val('');
+                }
+            });
+            $("#tea_password_hide").focusout(function(){
+                teacherPwd = $(this).val();
+                if(teacherPwd==''){
+                    // $(this).val('输入密码');
+                }
+            });
+            function teacherLogin(){
+                var data ={};
+                data.account = parseInt(teacherName);
+                data.pwd = teacherPwd;
+                $.ajax({
+                    type: "POST",
+                    url: "/course/teacher/login",
+                    data: JSON.stringify(data),
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function(result) {
+                        loginig = false;
+                        if (result.errorCode == 100) {
+                            window.location.replace("/user/teacher.html");
+                            
+                        } else {
+                            alert("帐号或密码错误")
+                        }
+                    }
+                })
+            }
+           
+        /*管理员登录信息验证*/
+            var username;
+            var password;
+            $("#sec_username_hide").focus(function(){
+                username = $(this).val();
+                if(username=='输入帐号'){
+                  $(this).val('');
+                }
+            });
+            $("#sec_username_hide").focusout(function(){
+                username = $(this).val();
+                if(username==''){
+                  $(this).val('输入帐号');
+                }
+            });
+            $("#sec_password_hide").focus(function(){
+                password = $(this).val();
+                if(password=='输入密码'){
+                  $(this).val('');
+                }
+            });
+            $("#sec_password_hide").focusout(function(){
+                password = $(this).val();
+                if(password==''){
+                  // $(this).val('输入密码');
+                }
+            });
+            function adminLogin(){
+                var adminData ={};
+                adminData.account = parseInt(username);
+                adminData.pwd = password;
+                $.ajax({
+                    type: "POST",
+                    url: "/course/admin/login",
+                    data: JSON.stringify(adminData),
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function(result) {
+                        loginig = false;
+                        if (result.errorCode == 100) {
+                            window.location.replace("/user/admin.html");
+                            
+                        } else {
+                            alert("帐号或密码错误")
+                        }
+                    }
+                })
+            }
+</script>
+</body>
+
+</html>
