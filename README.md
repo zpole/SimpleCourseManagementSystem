@@ -1,4 +1,4 @@
-## A simple course management system by Java, JS, HTML & nginx.
+## A simple course management system by Java, JS, HTML, MySQL & nginx.
 
 ### Main Function
 
